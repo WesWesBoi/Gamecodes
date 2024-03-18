@@ -1,0 +1,390 @@
+JUMP CODE
+public class jumpmove : MonoBehaviour
+{
+    //Creating a variable called moveSpeed.
+    float moveSpeed;
+
+    //
+    float HorizontalInput;
+
+    //
+    float VerticalInput;
+
+    //
+    float jumpHeight;
+
+    //
+    Rigidbody playerRB;
+
+    bool whentoJump;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        //setting moveSpeed variable to 5f.
+        moveSpeed = 5f;
+
+        //
+        jumpHeight = 10f;
+
+        //
+        playerRB = GetComponent<Rigidbody>();
+
+        whentoJump = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //
+        HorizontalInput = Input.GetAxis("Horizontal");
+
+        //
+        VerticalInput = Input.GetAxis("Vertical");
+
+        //
+        transform.Translate(HorizontalInput * moveSpeed * Time.deltaTime, 0, VerticalInput * moveSpeed * Time.deltaTime);
+
+        //
+        if (Input.GetButtonDown("Jump") && whentoJump == true)
+        {
+
+
+            //
+            playerRB.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse);
+            whentoJump = false;
+
+        }
+
+    }
+
+    public void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Ground")
+        {
+
+            whentoJump = true;
+
+
+
+        }
+
+    }
+
+
+}
+RESPAWN CODE
+public class respawn : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    public GameObject myPlayer;
+    float positionX;
+    float positionY;
+    float positionZ;
+    
+    // Start is called before the first frame update
+    void Start()
+    {
+        positionX = -1.54f;
+        positionY = -2.34f;
+        positionZ = -2.8f;
+        myPlayer = GameObject.Find("Player");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+
+        if (other.gameObject.tag == "Player")
+        {
+
+            myPlayer.transform.position = new Vector3(positionX, positionY, positionZ);
+
+        }
+
+
+    }
+
+}
+public class SpawnPlayer : MonoBehaviour
+{
+
+    float positionX;
+    float positionY;
+    float positionZ;
+    // Start is called before the first frame update
+    void Start()
+    {
+        positionX = -1.54f;
+        positionY = -2.34f;
+        positionZ = -2.8f;
+        transform.position = new Vector3(positionX, positionY, positionZ);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+
+
+}
+MOREMOVESS
+public class moremove : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        bool isitColliding;
+        void Start()
+        {
+            isitColliding = false;
+        }
+
+        //This is where I would like code to be per frame (Happen again and again).
+        void Update()
+        {
+
+            if (isitColliding == false)
+            {
+                transform.position += new Vector3(0, 0, 2 * Time.deltaTime);
+
+            }
+
+            if (isitColliding == true)
+            {
+
+                transform.position += new Vector3(0, 0, -2 * Time.deltaTime);
+
+            }
+        }
+
+        void OnCollisionEnter(Collision other)
+        {
+
+            if (other.gameObject.tag == "WallNorth" && isitColliding == false)
+            {
+                isitColliding = true;
+                transform.position += new Vector3(0, 0, 0);
+
+            }
+
+            if (other.gameObject.tag == "WallSouth" && isitColliding == true)
+            {
+                isitColliding = false;
+                transform.position += new Vector3(0, 0, 0);
+
+
+            }
+        }
+
+    }
+
+
+}
+
+PLAYMOVE CODE
+public class playmove : MonoBehaviour
+{
+        [SerializeField] float playerSpeed = 10f;
+
+        float yValue;
+
+        // Start is called before the first frame update (happens once)
+        void Start()
+        {
+
+            SetValueY();
+            PrintInstructions();
+
+
+        }
+
+
+        void Update()
+        {
+
+            PlayerMovement();
+
+        }
+
+
+        void PrintInstructions()
+        {
+
+            Debug.Log("Welcome to the Game.");
+            Debug.Log("Move your player with WASD or Arrow Keys");
+            Debug.Log("Don't hit the wall or the objects!");
+
+
+        }
+        void PlayerMovement()
+        {
+
+            float xValue = Input.GetAxis("Horizontal") * Time.deltaTime * playerSpeed;
+            float zValue = Input.GetAxis("Vertical") * Time.deltaTime * playerSpeed;
+            transform.Translate(xValue, yValue, zValue);
+
+        }
+
+        void SetValueY()
+        {
+
+            yValue = 0f;
+        }
+
+   
+
+}
+mOVEMOVEMTN CODE
+public class Movement : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+
+        bool collideWithMe;
+        float positionX;
+        float positionY;
+        float positionZ;
+        float resetX;
+        float resetY;
+        float resetZ;
+        float enemySpeedOne;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            collideWithMe = false;
+            positionX = 2f;
+            positionY = 0;
+            positionZ = 0;
+
+            resetX = 0;
+            resetY = 0;
+            resetZ = 0;
+
+            enemySpeedOne = 5f;
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (collideWithMe == false)
+            {
+                transform.position += new Vector3(positionX * Time.deltaTime * enemySpeedOne, positionY, positionZ);
+            }
+            if (collideWithMe == true)
+            {
+
+                transform.position += new Vector3(-positionX * Time.deltaTime * enemySpeedOne, positionY, positionZ);
+
+            }
+
+        }
+
+
+        void OnCollisionEnter(Collision other)
+        {
+
+            if (other.gameObject.tag == "WallEast" && collideWithMe == false)
+            {
+                collideWithMe = true;
+                transform.position += new Vector3(resetX, resetY, resetZ);
+
+            }
+            if (other.gameObject.tag == "WallWest" && collideWithMe == true)
+            {
+                collideWithMe = false;
+                transform.position += new Vector3(resetX, resetY, resetZ);
+
+            }
+
+
+        }
+
+
+    }
+
+  
+}
+public class VerticalMove : MonoBehaviour
+{
+
+    //Set a boolean to determine when the games object collides between two walls.
+    bool isitColliding;
+    void Start()
+    {
+
+        //Set boolean to false in the beginning to determine first movement (to the right).
+        isitColliding = false;
+    }
+
+    //This is where I would like code to be per frame (Happen again and again).
+    void Update()
+    {
+        //If my boolean variable is set to false
+        if (isitColliding == false)
+        {
+
+            //Then I will move my object 2 units on the Z axis
+            transform.position += new Vector3(0, 0, 2 * Time.deltaTime);
+
+        }
+        //If my boolean variable is set to true
+        if (isitColliding == true)
+        {
+
+
+            //Then I will move my object -2 units on the Z axis
+            transform.position += new Vector3(0, 0, -2 * Time.deltaTime);
+
+        }
+    }
+
+    //Creating a Unity method (function) called OnCollisionEnter with a parameter of Collision representing other
+    void OnCollisionEnter(Collision other)
+    {
+
+
+        // if the game object has a tag that is "WallNorth and if my boolean variable is set to false
+        if (other.gameObject.tag == "North Wall" && isitColliding == true)
+        {
+
+            //change the boolean variable to true
+
+
+            //make the game object not move at all to stop the game object in its path.
+            transform.position += new Vector3(0, 0, 0);
+
+            isitColliding = false;
+
+        }
+
+        // if the game object has a tag that is "WallSouth and if my boolean variable is set to true
+
+        if (other.gameObject.tag == "South Wall" && isitColliding == false)
+        {
+            transform.position += new Vector3(0, 0, 0);
+            //change the boolean variable to false
+            isitColliding = true;
+
+            //make the game object not move at all to stop the game object in its path.   
+
+
+
+
+        }
+    }
+}
+
+
+
